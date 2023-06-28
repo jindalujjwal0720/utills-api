@@ -1,0 +1,49 @@
+.container {
+  --background-color: hsl(0, 0%, 100%);
+  --quote-color: hsl(0, 0%, 18%);
+  --author-color: hsla(0, 0%, 30%, 0.7);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.quote {
+  color: var(--quote-color);
+  font-size: 1.2rem;
+  letter-spacing: 0.4px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.author {
+  color: var(--author-color);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0;
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+.author::before {
+  content: "— ";
+}
+
+.container[data-theme="dark"] {
+  --background-color: hsl(0, 0%, 20%);
+  --quote-color: hsl(0, 0%, 90%);
+  --author-color: hsl(0, 0%, 80%);
+}
