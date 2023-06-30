@@ -5,7 +5,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 const BuildResume = ({ config }) => {
   const { values, get } = useResume();
-  console.log(config);
 
   return (
     <div className={styles.build}>
@@ -63,7 +62,6 @@ const BuildResume = ({ config }) => {
 };
 
 const StaticSection = ({ name, fields, desc, section }) => {
-  console.log(section);
   return (
     <div className={styles.section}>
       <h2>{name}</h2>
@@ -89,8 +87,6 @@ const StaticSection = ({ name, fields, desc, section }) => {
 
 const DynamicSection = ({ name, fields, sectionKey, section, desc }) => {
   const { handleResumeChange } = useResume();
-
-  console.log(section);
 
   const handleElementAdd = (e) => {
     e.stopPropagation();
@@ -170,7 +166,6 @@ const Input = ({
   const handleInputChange = async (e) => {
     if (type === "image") {
       const photo = await handlePhoto(e);
-      console.log(photo);
       handleResumeChange(inputKey, photo);
     } else if (
       type === "text" ||
@@ -202,7 +197,6 @@ const Input = ({
             placeholder={placeholder}
             defaultValue={defaultValue}
             onChange={(e) => {
-              console.log(inputKey);
               handleInputChangeWithDebounce(e);
             }}
           />
@@ -219,7 +213,6 @@ const Input = ({
             placeholder={placeholder}
             defaultValue={value}
             onChange={(e) => {
-              console.log(inputKey);
               handleInputChangeWithDebounce(e);
             }}
           />
@@ -235,7 +228,6 @@ const Input = ({
             placeholder={placeholder}
             defaultValue={value}
             onChange={(e) => {
-              console.log(inputKey);
               handleInputChangeWithDebounce(e);
             }}
           />
@@ -255,7 +247,6 @@ const Input = ({
             accept="image/*"
             placeholder={placeholder}
             onChange={(e) => {
-              console.log(inputKey);
               handleInputChange(e);
             }}
           />
@@ -269,7 +260,6 @@ const Input = ({
             name={name}
             id={name}
             onChange={(e) => {
-              console.log(inputKey);
               handleInputChange(e);
             }}
           >
@@ -309,7 +299,7 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
 
   const handleAdd = (e) => {
     e.stopPropagation();
-    handleResumeChange(sectionKey, [...section, ""]);
+    handleResumeChange(sectionKey, [...(section || []), ""]);
   };
 
   const handleDelete = (e, index) => {
@@ -347,7 +337,6 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
               type="text"
               defaultValue={element}
               onChange={(e) => {
-                console.log(`${sectionKey}.${index}`);
                 handleInputChangeWithDebounce(e, index);
               }}
             />
@@ -379,7 +368,7 @@ const DynamicList = ({ name, sectionKey, section, desc, fields }) => {
         newElement[field.name] = [];
       }
     });
-    handleResumeChange(sectionKey, [...section, newElement]);
+    handleResumeChange(sectionKey, [...(section || []), newElement]);
   };
 
   const handleDelete = (e, index) => {
@@ -389,8 +378,6 @@ const DynamicList = ({ name, sectionKey, section, desc, fields }) => {
       ...section.slice(index + 1),
     ]);
   };
-
-  console.log(section);
 
   return (
     <div className={styles.input_list}>
