@@ -7,30 +7,26 @@ const RandomQuote = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const theme = queryParams.get("theme");
-  const uid = queryParams.get("uid");
   const [quote, setQuote] = useState({});
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!uid) {
-      throw new Error("uid is required");
-    }
     fetch("https://api.quotable.io/random")
       .then((res) => res.json())
       .then((data) => setQuote(data));
-  }, [uid]);
+  }, []);
 
   useEffect(() => {
     if (quote.content) {
-      htmlToImage(containerRef.current, `random-quotes/${uid}.png`).then(
-        (dataUrl) => {
-          // this is the image data url
-          console.log(dataUrl);
-          redirect(dataUrl);
-        }
-      );
+      htmlToImage(containerRef.current, `random-quote.png`).then((dataUrl) => {
+        // this is the image data url
+        console.log(dataUrl);
+        console.log(
+          "Copy this image from console and paste into a text file. Rename the file to .png"
+        );
+      });
     }
-  }, [quote, uid]);
+  }, [quote]);
 
   return (
     <div ref={containerRef} className={styles.container} data-theme={theme}>

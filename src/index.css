@@ -15,3 +15,8 @@ code {
 * {
   box-sizing: border-box;
 }
+
+@page {
+  size: A4;
+  margin: 0;
+}

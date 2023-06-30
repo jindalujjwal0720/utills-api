@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "left right";
+}
+
+.left {
+  grid-area: left;
+  background-color: #fff;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.right {
+  grid-area: right;
+  background-color: hsl(222, 13%, 45%);
+  color: #fff;
+  height: 100dvh;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left {
+    overflow-y: auto;
+  }
+
+  .right {
+    position: relative;
+    overflow-y: auto;
+  }
+}

@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  outline: 0;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  background-color: hsl(210, 85%, 54%);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.option:hover {
+  background-color: hsl(210, 85%, 44%);
+  transition: background-color 0.2s ease-in-out;
+}
