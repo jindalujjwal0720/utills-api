@@ -48,8 +48,9 @@
 
 .user_details .links_and_info {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 3fr 5fr 3fr;
   row-gap: 0.55rem;
+  column-gap: 0.5rem;
 }
 
 .user_details .info span {
@@ -62,7 +63,6 @@
 }
 
 .user_image {
-  width: auto;
   max-width: 5rem;
   max-height: 6.5rem;
 }
@@ -89,7 +89,6 @@
   grid-area: left;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 1rem;
 }
 

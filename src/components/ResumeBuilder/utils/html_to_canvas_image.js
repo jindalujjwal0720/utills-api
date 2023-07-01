@@ -1,7 +1,6 @@
 import html2canvas from "html2canvas";
 
 export const htmlToCanvas = async (element) => {
-  console.log(element);
   return html2canvas(element, {
     allowTaint: true,
     useCORS: true,
@@ -13,7 +12,6 @@ export const htmlToCanvas = async (element) => {
 };
 
 export const htmlToCanvasImage = async (element) => {
-  console.log(element);
   return html2canvas(element, {
     allowTaint: true,
     useCORS: true,

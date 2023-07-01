@@ -49,6 +49,7 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   column-gap: 36px;
   row-gap: 16px;
+  animation: slidefadein 0.5s;
 }
 
 .section_fields:has(summary) {
@@ -283,6 +284,38 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  animation: slidefadein 0.5s;
+}
+
+.slidefadein {
+  animation: slidefadein 0.5s;
+}
+
+.slidefadeout,
+.slidefadeout > * {
+  animation: slidefadeout 0.5s;
+}
+
+@keyframes slidefadein {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slidefadeout {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
 .input_list_element {
@@ -291,6 +324,7 @@
   border: 1px solid hsl(222, 45%, 96%);
   padding: 16px;
   border-radius: 6px;
+  animation: slidefadein 0.5s;
 }
 
 .input_list_element[open] > *:not(summary) {
@@ -368,8 +402,33 @@
   background-color: #fff;
   border-radius: 6px;
   text-align: left;
+  cursor: pointer;
 }
 
 .section_actions button:hover {
   background-color: hsl(207, 100%, 98%);
+}
+
+.slide_up_icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(223, 15%, 57%);
+}
+
+.slide_up_icon:active,
+.slide_up_icon:focus,
+.slide_up_icon:hover {
+  color: hsl(207, 88%, 52%);
+}
+
+.input_list_elements .dragging {
+  opacity: 0.5;
+}
+
+.input_list_elements .draggedOver {
+  border: 2px dashed hsl(207, 88%, 52%);
 }

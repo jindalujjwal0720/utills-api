@@ -5,53 +5,57 @@ const ResumeContext = React.createContext();
 export const useResume = () => React.useContext(ResumeContext);
 
 const ResumeProvider = ({ children }) => {
-  const [values, setValues] = React.useState(
-    JSON.parse(localStorage.getItem("resume")) || {
-      name: "Untitled",
-      sections: {
-        profile: {
-          name: "Profile",
-          key: "sections.profile",
-          data: {},
-        },
-        education: {
-          name: "Education",
-          key: "sections.education",
-          data: [],
-        },
-        experience: {
-          name: "Experience",
-          key: "sections.experience",
-          data: [],
-        },
-        projects: {
-          name: "Projects",
-          key: "sections.projects",
-          data: [],
-        },
-        sportsProgramming: {
-          name: "Sports Programming",
-          key: "sections.sportsProgramming",
-          data: [],
-        },
-        technicalSkills: {
-          name: "Technical Skills",
-          key: "sections.technicalSkills",
-          data: [],
-        },
-        extraCurriculars: {
-          name: "Extra Curriculars",
-          key: "sections.extraCurriculars",
-          data: [],
-        },
-        achievements: {
-          name: "Achievements",
-          key: "sections.achievements",
-          data: [],
-        },
+  const [values, setValues] = React.useState({
+    name: "Untitled",
+    sections: {
+      profile: {
+        name: "Profile",
+        key: "sections.profile",
+        data: {},
       },
-    }
-  );
+      education: {
+        name: "Education",
+        key: "sections.education",
+        data: [],
+      },
+      experience: {
+        name: "Experience",
+        key: "sections.experience",
+        data: [],
+      },
+      projects: {
+        name: "Projects",
+        key: "sections.projects",
+        data: [],
+      },
+      sportsProgramming: {
+        name: "Sports Programming",
+        key: "sections.sportsProgramming",
+        data: [],
+      },
+      technicalSkills: {
+        name: "Technical Skills",
+        key: "sections.technicalSkills",
+        data: [],
+      },
+      extraCurriculars: {
+        name: "Extra Curriculars",
+        key: "sections.extraCurriculars",
+        data: [],
+      },
+      achievements: {
+        name: "Achievements",
+        key: "sections.achievements",
+        data: [],
+      },
+      positionsOfResponsibility: {
+        name: "Positions of Responsibility",
+        key: "sections.positionsOfResponsibility",
+        data: [],
+      },
+    },
+    ...JSON.parse(localStorage.getItem("resume")),
+  });
   const [resumeScore, setResumeScore] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
 
@@ -123,7 +127,6 @@ const ResumeProvider = ({ children }) => {
           }
         }
       });
-      console.log(temp);
       return { ...prev };
     });
     setLoading(false);
@@ -138,6 +141,7 @@ const ResumeProvider = ({ children }) => {
     const navigate = field.split(".");
     let temp = values;
     navigate.forEach((key) => {
+      if (!temp) return null;
       if (Number.isInteger(parseInt(key))) {
         temp = temp[parseInt(key)];
       } else {
@@ -150,7 +154,7 @@ const ResumeProvider = ({ children }) => {
   useEffect(() => {
     const data = localStorage.getItem("resume");
     if (data) {
-      setValues(JSON.parse(data));
+      setValues((prev) => ({ ...prev, ...JSON.parse(data) }));
     }
   }, []);
 

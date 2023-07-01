@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Config.module.css";
 import { useResume } from "../../context/Resume";
 import { AiOutlineDelete } from "react-icons/ai";
+// import { FiArrowUp } from "react-icons/fi";
 
 const BuildResume = ({ config }) => {
   const { values, get } = useResume();
@@ -31,6 +32,7 @@ const BuildResume = ({ config }) => {
                 sectionKey={section.key}
                 desc={section.description}
                 section={get(section.key)}
+                displayKey={section.displayKey}
               />
             );
           } else if (section.type === "dynamic") {
@@ -42,6 +44,7 @@ const BuildResume = ({ config }) => {
                 sectionKey={section.key}
                 section={get(section.key)}
                 desc={section.description}
+                displayKey={section.displayKey}
               />
             );
           } else if (section.type === "list-string") {
@@ -52,6 +55,7 @@ const BuildResume = ({ config }) => {
                 sectionKey={section.key}
                 section={get(section.key)}
                 desc={section.description}
+                displayKey={section.displayKey}
               />
             );
           }
@@ -77,7 +81,9 @@ const StaticSection = ({ name, fields, desc, section }) => {
             options={field.options}
             fields={field.fields}
             inputKey={field.key}
-            value={section[field.name.split(".").pop()]}
+            defaultValue={field.defaultValue}
+            value={section[field.key.split(".").pop()]}
+            displayKey={field.displayKey}
           />
         ))}
       </div>
@@ -85,8 +91,21 @@ const StaticSection = ({ name, fields, desc, section }) => {
   );
 };
 
-const DynamicSection = ({ name, fields, sectionKey, section, desc }) => {
+const DynamicSection = ({
+  name,
+  fields,
+  sectionKey,
+  section,
+  desc,
+  displayKey,
+}) => {
   const { handleResumeChange } = useResume();
+  const sectionRefs = useRef([]);
+
+  useEffect(() => {
+    if (!section) return;
+    sectionRefs.current = sectionRefs.current.slice(0, section?.length);
+  }, [section]);
 
   const handleElementAdd = (e) => {
     e.stopPropagation();
@@ -101,10 +120,14 @@ const DynamicSection = ({ name, fields, sectionKey, section, desc }) => {
 
   const handleElementDelete = (e, index) => {
     e.stopPropagation();
-    handleResumeChange(sectionKey, [
-      ...section.slice(0, index),
-      ...section.slice(index + 1),
-    ]);
+    const element = sectionRefs.current[index];
+    element.classList.add(styles.slidefadeout);
+    setTimeout(() => {
+      handleResumeChange(sectionKey, [
+        ...section.slice(0, index),
+        ...section.slice(index + 1),
+      ]);
+    }, 480);
   };
 
   return (
@@ -113,13 +136,13 @@ const DynamicSection = ({ name, fields, sectionKey, section, desc }) => {
       {desc && <p>{desc}</p>}
       <div className={styles.section_elements}>
         {section.map((element, _index) => (
-          <details key={_index} className={styles.section_fields}>
+          <details
+            ref={(el) => (sectionRefs.current[_index] = el)}
+            key={_index}
+            className={styles.section_fields}
+          >
             <summary>
-              {element.title ||
-                element.name ||
-                element.degree ||
-                element.platform ||
-                "Untitled"}
+              {element[displayKey] || "Untitled"}
               <div className={styles.section_element_actions}>
                 <button onClick={(e) => handleElementDelete(e, _index)}>
                   <AiOutlineDelete size={20} />
@@ -134,10 +157,11 @@ const DynamicSection = ({ name, fields, sectionKey, section, desc }) => {
                 name={field.name}
                 placeholder={field.placeholder}
                 value={element[field.name]}
-                defaultValue={element[field.name]}
+                defaultValue={element[field.name] || field.defaultValue}
                 inputKey={`${sectionKey}.${_index}.${field.key}`}
                 options={field.options}
                 fields={field.fields}
+                displayKey={field.displayKey}
               />
             ))}
           </details>
@@ -160,6 +184,7 @@ const Input = ({
   fields,
   inputKey,
   options,
+  displayKey,
 }) => {
   const { handleResumeChange, handlePhoto, setLoading } = useResume();
 
@@ -195,7 +220,7 @@ const Input = ({
             type="text"
             id={name}
             placeholder={placeholder}
-            defaultValue={defaultValue}
+            defaultValue={value || defaultValue}
             onChange={(e) => {
               handleInputChangeWithDebounce(e);
             }}
@@ -211,7 +236,7 @@ const Input = ({
             type="text"
             id={name}
             placeholder={placeholder}
-            defaultValue={value}
+            defaultValue={value || defaultValue}
             onChange={(e) => {
               handleInputChangeWithDebounce(e);
             }}
@@ -226,7 +251,7 @@ const Input = ({
             name={name}
             id={name}
             placeholder={placeholder}
-            defaultValue={value}
+            defaultValue={value || defaultValue}
             onChange={(e) => {
               handleInputChangeWithDebounce(e);
             }}
@@ -262,6 +287,7 @@ const Input = ({
             onChange={(e) => {
               handleInputChange(e);
             }}
+            defaultValue={value || defaultValue}
           >
             {placeholder && <option value="">{placeholder}</option>}
             {options.map((option, index) => (
@@ -279,6 +305,7 @@ const Input = ({
           desc={placeholder}
           sectionKey={inputKey}
           section={value}
+          displayKey={displayKey}
         />
       );
     case "list":
@@ -289,13 +316,28 @@ const Input = ({
           sectionKey={inputKey}
           section={value}
           fields={fields}
+          displayKey={displayKey}
         />
       );
   }
 };
 
-const DynamicListString = ({ name, sectionKey, section, desc }) => {
+// function useForceUpdate() {
+//   const [value, setValue] = useState(0); // integer state
+//   return () => setValue((value) => value + 1); // update state to force render
+//   // A function that increment 👆🏻 the previous state like here
+//   // is better than directly setting `setValue(value + 1)`
+// }
+
+const DynamicListString = ({ name, sectionKey, section, desc, displayKey }) => {
   const { handleResumeChange, setLoading } = useResume();
+  const itemRefs = useRef([]);
+  // const forceUpdate = useForceUpdate();
+
+  useEffect(() => {
+    if (!section) return;
+    itemRefs.current = itemRefs.current.slice(0, section?.length);
+  }, [section]);
 
   const handleAdd = (e) => {
     e.stopPropagation();
@@ -304,10 +346,14 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
 
   const handleDelete = (e, index) => {
     e.stopPropagation();
-    handleResumeChange(sectionKey, [
-      ...section.slice(0, index),
-      ...section.slice(index + 1),
-    ]);
+    const element = itemRefs.current[index];
+    element.classList.add(styles.slidefadeout);
+    setTimeout(() => {
+      handleResumeChange(sectionKey, [
+        ...section.slice(0, index),
+        ...section.slice(index + 1),
+      ]);
+    }, 480);
   };
 
   const handleInputChange = (e, index) => {
@@ -324,6 +370,18 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
     }, 1000);
   };
 
+  // const handleMoveUp = (e, index) => {
+  //   e.stopPropagation();
+  //   if (index === 0) return;
+  //   // swap with previous element
+  //   const newSection = [...section];
+  //   const temp = newSection[index - 1];
+  //   newSection[index - 1] = newSection[index];
+  //   newSection[index] = temp;
+  //   handleResumeChange(sectionKey, newSection);
+  //   forceUpdate();
+  // };
+
   return (
     <div className={styles.input_list}>
       <label htmlFor={name} className={styles.input_list_label}>
@@ -332,7 +390,17 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
       {desc && <p>{desc}</p>}
       <div className={styles.input_list_elements}>
         {section?.map((element, index) => (
-          <div key={index} className={styles.input_list_String_element}>
+          <div
+            ref={(el) => (itemRefs.current[index] = el)}
+            key={index}
+            className={styles.input_list_String_element}
+          >
+            {/* <span
+              className={styles.slide_up_icon}
+              onClick={(e) => handleMoveUp(e, index)}
+            >
+              <FiArrowUp size={18} />
+            </span> */}
             <input
               type="text"
               defaultValue={element}
@@ -353,8 +421,16 @@ const DynamicListString = ({ name, sectionKey, section, desc }) => {
   );
 };
 
-const DynamicList = ({ name, sectionKey, section, desc, fields }) => {
+const DynamicList = ({
+  name,
+  sectionKey,
+  section,
+  desc,
+  fields,
+  displayKey,
+}) => {
   const { handleResumeChange } = useResume();
+  const itemRefs = useRef([]);
 
   const handleAdd = (e) => {
     e.stopPropagation();
@@ -373,10 +449,14 @@ const DynamicList = ({ name, sectionKey, section, desc, fields }) => {
 
   const handleDelete = (e, index) => {
     e.stopPropagation();
-    handleResumeChange(sectionKey, [
-      ...section.slice(0, index),
-      ...section.slice(index + 1),
-    ]);
+    const element = itemRefs.current[index];
+    element.classList.add(styles.slidefadeout);
+    setTimeout(() => {
+      handleResumeChange(sectionKey, [
+        ...section.slice(0, index),
+        ...section.slice(index + 1),
+      ]);
+    }, 480);
   };
 
   return (
@@ -387,9 +467,13 @@ const DynamicList = ({ name, sectionKey, section, desc, fields }) => {
       {desc && <p>{desc}</p>}
       <div className={styles.input_list_elements}>
         {section?.map((element, _index) => (
-          <details key={_index} className={styles.input_list_element}>
+          <details
+            ref={(el) => (itemRefs.current[_index] = el)}
+            key={_index}
+            className={styles.input_list_element}
+          >
             <summary>
-              {element.name || "Untitled"}
+              {element[displayKey] || "Untitled"}
               <button onClick={(e) => handleDelete(e, _index)}>
                 <AiOutlineDelete size={20} />
               </button>

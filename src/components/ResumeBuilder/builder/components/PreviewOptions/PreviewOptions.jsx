@@ -2,10 +2,12 @@ import React from "react";
 import styles from "./PreviewOptions.module.css";
 import previewStyles from "../Preview/Preview.module.css";
 import { useResume } from "../context/Resume";
+import { htmlToCanvasImage } from "../../../utils/html_to_canvas_image";
+import { saveAs } from "file-saver";
 
 const PreviewOptions = () => {
-  const { loading } = useResume();
-  const handleDownloadPDF = () => {
+  const { loading, values } = useResume();
+  const handlePrintPDF = () => {
     const newWindow = window.open("", "_blank");
     const stylesheets = document.styleSheets;
     const styles = Array.from(stylesheets)
@@ -43,18 +45,31 @@ const PreviewOptions = () => {
     `;
     newWindow.document.write(content);
     newWindow.document.close();
-    newWindow.print();
+    newWindow.addEventListener("load", () => {
+      newWindow.print();
+    });
     newWindow.addEventListener("afterprint", () => {
       newWindow.close();
     });
+  };
+
+  const handleImageDownload = async () => {
+    const imageBlob = await htmlToCanvasImage(
+      document.body.querySelector(`.${previewStyles.print_only_resume_page}`)
+    );
+
+    saveAs(imageBlob, `${values.name}.png`);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.options}>
         {loading ? "Saving..." : "Saved!"}
-        <button className={styles.option} onClick={handleDownloadPDF}>
-          Download PDF
+        <button className={styles.option} onClick={handlePrintPDF}>
+          Print PDF
+        </button>
+        <button className={styles.option} onClick={handleImageDownload}>
+          Image
         </button>
       </div>
     </div>

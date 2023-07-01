@@ -3,21 +3,22 @@ import styles from "./ISMResume.module.css";
 import { getSafeMarkdownString } from "../../../../utils/markdown";
 
 const ISMResume = ({ sections }) => {
-  console.log(sections);
   return (
     <div className={styles.resume}>
       <Header profile={sections.profile.data} />
       <div className={styles.left}>
-        <Projects projects={sections.projects.data} />
+        <Experience experience={sections.experience?.data} />
+        <Projects projects={sections.projects?.data} />
+        <PORs pors={sections.positionsOfResponsibility?.data} />
       </div>
       <div className={styles.right}>
-        <Education education={sections.education.data} />
+        <Education education={sections.education?.data} />
         <SportsProgramming
-          sportsProgramming={sections.sportsProgramming.data}
+          sportsProgramming={sections.sportsProgramming?.data}
         />
-        <TechnicalSkills technicalSkills={sections.technicalSkills.data} />
-        <ExtraCurriculars extraCurriculars={sections.extraCurriculars.data} />
-        <Achievements achievements={sections.achievements.data} />
+        <TechnicalSkills technicalSkills={sections.technicalSkills?.data} />
+        <ExtraCurriculars extraCurriculars={sections.extraCurriculars?.data} />
+        <Achievements achievements={sections.achievements?.data} />
       </div>
     </div>
   );
@@ -99,7 +100,7 @@ const Section = ({ title, children }) => {
   );
 };
 
-const Points = ({ points, markdown }) => {
+const Points = ({ points, markdown = true }) => {
   if (!points) return null;
   return (
     <ul className={styles.points}>
@@ -114,6 +115,25 @@ const Points = ({ points, markdown }) => {
         )
       )}
     </ul>
+  );
+};
+
+const Experience = ({ experience }) => {
+  if (!experience || experience.length == 0) return null;
+  return (
+    <Section title="Experience">
+      {experience?.map((exp, index) => (
+        <div className={styles.experience} key={index}>
+          <h3 className={styles.title}>
+            {[exp.company, exp.role, exp.timePeriod]
+              .filter(Boolean)
+              .join(" - ")}
+          </h3>
+          {exp.description && <h4>{exp.description}</h4>}
+          <Points points={exp.points} markdown={true} />
+        </div>
+      ))}
+    </Section>
   );
 };
 
@@ -243,6 +263,15 @@ const Achievements = ({ achievements }) => {
   return (
     <Section title="Achievements">
       <Points points={achievements} markdown={true} />
+    </Section>
+  );
+};
+
+const PORs = ({ pors }) => {
+  if (!pors || pors.length == 0) return null;
+  return (
+    <Section title="Positions of Responsibility">
+      <Points points={pors} markdown={true} />
     </Section>
   );
 };
