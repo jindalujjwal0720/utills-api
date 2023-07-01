@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Utility API",
+  "name": "Utility API",
+  "description": "Made for utility with 🧡 by @leafpetal",
   "icons": [
     {
       "src": "favicon.ico",
