@@ -46,6 +46,8 @@ const PreviewOptions = () => {
     `;
     newWindow.document.write(content);
     newWindow.document.close();
+    // navigate to #/resume in new window
+    newWindow.location.hash = "#/resume";
     newWindow.print();
     newWindow.addEventListener("afterprint", () => {
       newWindow.close();
