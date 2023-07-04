@@ -135,7 +135,7 @@ const ResumeProvider = ({ children }) => {
       nextBestSectionScore = 0;
     scoreMap.forEach((section) => {
       if (section.length) {
-        const data = sections[section.key].data;
+        const data = sections[section.key]?.data;
         const sectionScore = (data.length * section.score) / section.length;
         score += Math.min(section.score, sectionScore);
         if (section.score - sectionScore > nextBestSectionScore) {
