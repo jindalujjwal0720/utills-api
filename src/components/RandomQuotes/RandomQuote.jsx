@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./RandomQuote.module.css";
-import { useLocation, redirect } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { htmlToImage } from "../../utils/html_to_image";
 
 const RandomQuote = () => {

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Config.module.css";
 import { useResume } from "../../context/Resume";
 import { AiOutlineDelete } from "react-icons/ai";
 // import { FiArrowUp } from "react-icons/fi";
 
 const BuildResume = ({ config }) => {
-  const { values, get } = useResume();
+  const { values, get, resumeScore, resumeTip } = useResume();
 
   return (
     <div className={styles.build}>
@@ -19,6 +19,22 @@ const BuildResume = ({ config }) => {
         />
         <div className={styles.language}>
           {config.language === "en" ? "English" : "Unknown"}
+        </div>
+        <div className={styles.resumeScore}>
+          <div className={styles.score}>{resumeScore ? resumeScore : 0}%</div>
+          <div className={styles.tip}>
+            {resumeTip.increment !== 0 ? (
+              <>
+                <span>+{resumeTip.increment}%</span> {resumeTip.desc}
+              </>
+            ) : (
+              "No tip"
+            )}
+          </div>
+          <div
+            className={styles.scorebar}
+            style={{ width: `${resumeScore ? resumeScore : 0}%` }}
+          ></div>
         </div>
       </div>
       <div className={styles.sections}>
@@ -58,7 +74,7 @@ const BuildResume = ({ config }) => {
                 displayKey={section.displayKey}
               />
             );
-          }
+          } else return null;
         })}
       </div>
     </div>
@@ -319,6 +335,8 @@ const Input = ({
           displayKey={displayKey}
         />
       );
+    default:
+      return null;
   }
 };
 

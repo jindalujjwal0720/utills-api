@@ -57,21 +57,114 @@ const ResumeProvider = ({ children }) => {
     ...JSON.parse(localStorage.getItem("resume")),
   });
   const [resumeScore, setResumeScore] = React.useState(0);
+  const [resumeTip, setResumeTip] = React.useState({
+    desc: "",
+    increment: 0,
+  });
   const [loading, setLoading] = React.useState(false);
 
   const calculateResumeScore = () => {
     let score = 0;
     const { sections } = values;
-    const scoreMap = {
-      profile: 10,
-      education: 10,
-      experience: 10,
-      projects: 10,
-      sportsProgramming: 10,
-      technicalSkills: 10,
-      extraCurriculars: 10,
-      achievements: 10,
-    };
+    const scoreMap = [
+      {
+        name: "Profile",
+        key: "profile",
+        score: 10,
+        fields: {
+          name: 1,
+          email: 1,
+          photo: 3,
+          phone: 1,
+          githubUsername: 1,
+          admissionNumber: 1,
+          degree: 1,
+          branch: 1,
+        },
+      },
+      {
+        name: "Education",
+        key: "education",
+        score: 10,
+        length: 3,
+      },
+      {
+        name: "Experience",
+        key: "experience",
+        score: 20,
+        length: 1,
+      },
+      {
+        name: "Projects",
+        key: "projects",
+        score: 15,
+        length: 2,
+      },
+      {
+        name: "Sports Programming",
+        key: "sportsProgramming",
+        score: 10,
+        length: 2,
+      },
+      {
+        name: "Technical Skills",
+        key: "technicalSkills",
+        score: 10,
+        length: 4,
+      },
+      {
+        name: "Extra Curriculars",
+        key: "extraCurriculars",
+        score: 5,
+        length: 2,
+      },
+      {
+        name: "Achievements",
+        key: "achievements",
+        score: 10,
+        length: 2,
+      },
+      {
+        name: "Positions of Responsibility",
+        key: "positionsOfResponsibility",
+        score: 10,
+        length: 1,
+      },
+    ];
+    let nextBestSection = "",
+      nextBestSectionScore = 0;
+    scoreMap.forEach((section) => {
+      if (section.length) {
+        const data = sections[section.key].data;
+        const sectionScore = (data.length * section.score) / section.length;
+        score += Math.min(section.score, sectionScore);
+        if (section.score - sectionScore > nextBestSectionScore) {
+          nextBestSectionScore = section.score - sectionScore;
+          nextBestSection = section.name;
+        }
+      } else if (section.fields) {
+        const fields = section.fields;
+        const data = sections[section.key].data;
+        let sectionScore = 0;
+        for (let field in fields) {
+          if (data[field]) {
+            sectionScore += fields[field];
+          } else {
+            if (nextBestSectionScore < fields[field]) {
+              nextBestSectionScore = fields[field];
+              nextBestSection = section.name;
+            }
+          }
+        }
+        score += Math.min(section.score, sectionScore);
+      }
+    });
+    score = Math.round(score);
+    setResumeScore(score);
+    setResumeTip({
+      desc: nextBestSection,
+      increment: nextBestSectionScore,
+    });
   };
 
   const handlePhoto = async (e) => {
@@ -161,6 +254,7 @@ const ResumeProvider = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     localStorage.setItem("resume", JSON.stringify(values));
+    calculateResumeScore();
     setLoading(false);
   }, [values]);
 
@@ -171,6 +265,8 @@ const ResumeProvider = ({ children }) => {
     get,
     loading,
     setLoading,
+    resumeScore,
+    resumeTip,
   };
 
   return (

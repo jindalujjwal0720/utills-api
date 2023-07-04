@@ -119,7 +119,7 @@ const Points = ({ points, markdown = true }) => {
 };
 
 const Experience = ({ experience }) => {
-  if (!experience || experience.length == 0) return null;
+  if (!experience || experience.length === 0) return null;
   return (
     <Section title="Experience">
       {experience?.map((exp, index) => (
@@ -138,7 +138,7 @@ const Experience = ({ experience }) => {
 };
 
 const Projects = ({ projects }) => {
-  if (!projects || projects.length == 0) return null;
+  if (!projects || projects.length === 0) return null;
   return (
     <Section title="Projects">
       {projects?.map((project, index) => (
@@ -174,7 +174,7 @@ const Projects = ({ projects }) => {
 };
 
 const Education = ({ education }) => {
-  if (!education || education.length == 0) return null;
+  if (!education || education.length === 0) return null;
   return (
     <Section title="Education">
       {education?.map((education, index) => (
@@ -198,7 +198,7 @@ const Education = ({ education }) => {
 };
 
 const SportsProgramming = ({ sportsProgramming }) => {
-  if (!sportsProgramming || sportsProgramming.length == 0) return null;
+  if (!sportsProgramming || sportsProgramming.length === 0) return null;
   return (
     <Section title="Sports Programming">
       <table className={styles.table}>
@@ -232,7 +232,7 @@ const SportsProgramming = ({ sportsProgramming }) => {
 };
 
 const TechnicalSkills = ({ technicalSkills }) => {
-  if (!technicalSkills || technicalSkills.length == 0) return null;
+  if (!technicalSkills || technicalSkills.length === 0) return null;
   return (
     <Section title="Technical Skills">
       <table className={styles.table_left}>
@@ -250,7 +250,7 @@ const TechnicalSkills = ({ technicalSkills }) => {
 };
 
 const ExtraCurriculars = ({ extraCurriculars }) => {
-  if (!extraCurriculars || extraCurriculars.length == 0) return null;
+  if (!extraCurriculars || extraCurriculars.length === 0) return null;
   return (
     <Section title="Extra Curriculars">
       <Points points={extraCurriculars} />
@@ -259,7 +259,7 @@ const ExtraCurriculars = ({ extraCurriculars }) => {
 };
 
 const Achievements = ({ achievements }) => {
-  if (!achievements || achievements.length == 0) return null;
+  if (!achievements || achievements.length === 0) return null;
   return (
     <Section title="Achievements">
       <Points points={achievements} markdown={true} />
@@ -268,7 +268,7 @@ const Achievements = ({ achievements }) => {
 };
 
 const PORs = ({ pors }) => {
-  if (!pors || pors.length == 0) return null;
+  if (!pors || pors.length === 0) return null;
   return (
     <Section title="Positions of Responsibility">
       <Points points={pors} markdown={true} />

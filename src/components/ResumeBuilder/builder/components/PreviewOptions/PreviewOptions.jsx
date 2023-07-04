@@ -18,10 +18,11 @@ const PreviewOptions = () => {
             .join("\n");
         } catch (e) {
           console.log(e);
+          return null;
         }
       })
       .join("\n");
-    const html = document.querySelector("html").outerHTML;
+    // const html = document.querySelector("html").outerHTML;
     const head = document.querySelector("head").outerHTML;
     const body = document.body.querySelector(
       `.${previewStyles.print_only_resume_page}`
@@ -45,9 +46,7 @@ const PreviewOptions = () => {
     `;
     newWindow.document.write(content);
     newWindow.document.close();
-    newWindow.addEventListener("load", () => {
-      newWindow.print();
-    });
+    newWindow.print();
     newWindow.addEventListener("afterprint", () => {
       newWindow.close();
     });
@@ -57,7 +56,6 @@ const PreviewOptions = () => {
     const imageBlob = await htmlToCanvasImage(
       document.body.querySelector(`.${previewStyles.print_only_resume_page}`)
     );
-
     saveAs(imageBlob, `${values.name}.png`);
   };
 
@@ -66,7 +64,7 @@ const PreviewOptions = () => {
       <div className={styles.options}>
         {loading ? "Saving..." : "Saved!"}
         <button className={styles.option} onClick={handlePrintPDF}>
-          Print PDF
+          Print
         </button>
         <button className={styles.option} onClick={handleImageDownload}>
           Image
