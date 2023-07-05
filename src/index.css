@@ -20,3 +20,20 @@ code {
   size: A4;
   margin: 0;
 }
+
+@media print {
+  body *:has(#print_content) {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  #print_content {
+    visibility: visible;
+    height: 297mm;
+    width: 210mm;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}

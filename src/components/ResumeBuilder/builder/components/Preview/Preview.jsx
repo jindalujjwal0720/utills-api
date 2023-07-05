@@ -22,7 +22,7 @@ const Preview = () => {
   return (
     <div className={styles.preview}>
       {/* For only print purposes */}
-      <div className={styles.print_only_resume_page}>
+      <div className={styles.print_only_resume_page} id="print_content">
         <div ref={containerRef} className={styles.container}>
           <ISMResume sections={values.sections} />
         </div>
