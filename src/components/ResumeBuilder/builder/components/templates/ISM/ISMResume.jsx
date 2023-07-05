@@ -199,6 +199,13 @@ const Education = ({ education }) => {
 
 const SportsProgramming = ({ sportsProgramming }) => {
   if (!sportsProgramming || sportsProgramming.length === 0) return null;
+  let hasRating = false;
+  let hasQuestionsSolved = false;
+  sportsProgramming.forEach((sport) => {
+    if (sport.rating) hasRating = true;
+    if (sport.questionsSolved) hasQuestionsSolved = true;
+  });
+
   return (
     <Section title="Sports Programming">
       <table className={styles.table}>
@@ -206,7 +213,8 @@ const SportsProgramming = ({ sportsProgramming }) => {
           <tr>
             <th>Platform</th>
             <th>Username</th>
-            <th>Rating</th>
+            {hasQuestionsSolved && <th>Solved</th>}
+            {hasRating && <th>Rating</th>}
           </tr>
         </thead>
         <tbody>
@@ -222,7 +230,8 @@ const SportsProgramming = ({ sportsProgramming }) => {
                   {sport.username}
                 </a>
               </td>
-              <td>{sport.rating}</td>
+              {hasQuestionsSolved && <td>{sport.questionsSolved}</td>}
+              {hasRating && <td>{sport.rating}</td>}
             </tr>
           ))}
         </tbody>

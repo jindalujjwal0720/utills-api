@@ -316,6 +316,13 @@ const ISMResumeBuild = () => {
             placeholder: "",
             type: "text",
           },
+          {
+            name: "questionsSolved",
+            key: "questionsSolved",
+            label: "Questions Solved",
+            placeholder: "",
+            type: "text",
+          },
         ],
       },
       {
