@@ -16,23 +16,17 @@ code {
   box-sizing: border-box;
 }
 
-@page {
-  size: A4;
-  margin: 0;
-}
-
 @media print {
-  body *:has(#print_content) {
+  body *:not(#print_content, #print_content *) {
     position: absolute;
-    top: -9999px;
-    left: -9999px;
+    top: 0;
+    left: 0;
+    visibility: hidden;
   }
 
   #print_content {
     visibility: visible;
-    height: 297mm;
-    width: 210mm;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
   }

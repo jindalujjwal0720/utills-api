@@ -15,6 +15,14 @@
   margin: 0 auto;
 }
 
+.text_option {
+  cursor: pointer;
+}
+
+.text_option:hover {
+  text-decoration: underline;
+}
+
 .option {
   display: flex;
   align-items: center;
@@ -37,4 +45,10 @@
 .option:hover {
   background-color: hsl(210, 85%, 44%);
   transition: background-color 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .saved_state {
+    display: none;
+  }
 }

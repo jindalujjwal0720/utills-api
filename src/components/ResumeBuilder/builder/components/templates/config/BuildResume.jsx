@@ -21,7 +21,20 @@ const BuildResume = ({ config }) => {
           {config.language === "en" ? "English" : "Unknown"}
         </div>
         <div className={styles.resumeScore}>
-          <div className={styles.score}>{resumeScore ? resumeScore : 0}%</div>
+          <div
+            className={styles.score}
+            style={{
+              backgroundColor: `${
+                resumeScore < 33
+                  ? "hsl(353, 98%, 74%)"
+                  : resumeScore < 67
+                  ? "hsl(36, 90%, 49%)"
+                  : "hsl(148, 37%, 40%)"
+              }`,
+            }}
+          >
+            {resumeScore ? resumeScore : 0}%
+          </div>
           <div className={styles.tip}>
             {resumeTip.increment !== 0 ? (
               <>
@@ -33,7 +46,16 @@ const BuildResume = ({ config }) => {
           </div>
           <div
             className={styles.scorebar}
-            style={{ width: `${resumeScore ? resumeScore : 0}%` }}
+            style={{
+              width: `${resumeScore ? resumeScore : 0}%`,
+              backgroundColor: `${
+                resumeScore < 33
+                  ? "hsl(353, 98%, 74%)"
+                  : resumeScore < 67
+                  ? "hsl(36, 90%, 49%)"
+                  : "hsl(148, 37%, 40%)"
+              }`,
+            }}
           ></div>
         </div>
       </div>
@@ -215,6 +237,8 @@ const Input = ({
       type === "dropdown"
     ) {
       handleResumeChange(inputKey, e.target.value);
+    } else if (type === "toggle") {
+      handleResumeChange(inputKey, e.target.checked);
     }
   };
 
@@ -334,6 +358,22 @@ const Input = ({
           fields={fields}
           displayKey={displayKey}
         />
+      );
+    case "toggle":
+      return (
+        <div className={styles.input_toggle}>
+          <input
+            name={name}
+            id={name}
+            type="checkbox"
+            onChange={handleInputChange}
+            defaultChecked={value || defaultValue}
+          />
+          <label htmlFor={name}>
+            <span>{label}</span>
+            <span className={styles.toggle}></span>
+          </label>
+        </div>
       );
     default:
       return null;

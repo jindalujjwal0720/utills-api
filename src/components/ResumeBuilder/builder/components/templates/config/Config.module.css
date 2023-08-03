@@ -300,6 +300,58 @@
   margin-bottom: 0.1rem;
 }
 
+.input_toggle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  grid-column-end: span 1;
+}
+
+.input_toggle input {
+  display: none;
+}
+
+.input_toggle label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 6px;
+  gap: 16px;
+  padding: 10px;
+  background-color: hsl(222, 45%, 96%);
+}
+
+.input_toggle label .toggle {
+  width: 40px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: hsl(223, 15%, 57%);
+  position: relative;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.input_toggle label .toggle::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.input_toggle input:checked + label .toggle {
+  background-color: hsl(207, 88%, 52%);
+}
+
+.input_toggle input:checked + label .toggle::after {
+  transform: translateX(20px);
+}
+
 .input_list_elements {
   display: flex;
   flex-direction: column;

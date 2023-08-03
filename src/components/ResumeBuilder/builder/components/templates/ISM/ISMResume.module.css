@@ -6,7 +6,6 @@
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr 1fr;
   grid-gap: 0.8rem;
-  padding: 2rem;
 }
 
 .resume a {

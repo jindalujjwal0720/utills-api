@@ -1,4 +1,7 @@
 export const getSafeMarkdownString = (str) => {
+  if (!str) return "";
+  if (typeof str !== "string") return str;
+  // escape html
   str = str.replace(/<[^>]*>?/gm, "");
   str = str.replace(/&nbsp;/g, " ");
 

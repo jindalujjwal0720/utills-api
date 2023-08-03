@@ -5,7 +5,10 @@ import { getSafeMarkdownString } from "../../../../utils/markdown";
 const ISMResume = ({ sections }) => {
   return (
     <div className={styles.resume}>
-      <Header profile={sections.profile.data} />
+      <Header
+        profile={sections.profile.data}
+        ism_logo={sections.settings.data.logo}
+      />
       <div className={styles.left}>
         <Experience experience={sections.experience?.data} />
         <Projects projects={sections.projects?.data} />
@@ -24,7 +27,7 @@ const ISMResume = ({ sections }) => {
   );
 };
 
-const Header = ({ profile }) => {
+const Header = ({ profile, ism_logo }) => {
   if (!profile) return null;
   return (
     <div className={styles.header}>
@@ -81,10 +84,12 @@ const Header = ({ profile }) => {
         </div>
       </div>
       <div className={styles.ism_logo}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/b/b0/Indian_Institute_of_Technology_%28Indian_School_of_Mines%29%2C_Dhanbad_Logo.png"
-          alt="ISM Logo"
-        />
+        {ism_logo && (
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/b/b0/Indian_Institute_of_Technology_%28Indian_School_of_Mines%29%2C_Dhanbad_Logo.png"
+            alt="ISM Logo"
+          />
+        )}
       </div>
     </div>
   );
@@ -262,7 +267,7 @@ const ExtraCurriculars = ({ extraCurriculars }) => {
   if (!extraCurriculars || extraCurriculars.length === 0) return null;
   return (
     <Section title="Extra Curriculars">
-      <Points points={extraCurriculars} />
+      <Points points={extraCurriculars.map((extra) => extra.description)} />
     </Section>
   );
 };
@@ -271,7 +276,10 @@ const Achievements = ({ achievements }) => {
   if (!achievements || achievements.length === 0) return null;
   return (
     <Section title="Achievements">
-      <Points points={achievements} markdown={true} />
+      <Points
+        points={achievements.map((achieve) => achieve.description)}
+        markdown={true}
+      />
     </Section>
   );
 };
@@ -280,7 +288,7 @@ const PORs = ({ pors }) => {
   if (!pors || pors.length === 0) return null;
   return (
     <Section title="Positions of Responsibility">
-      <Points points={pors} markdown={true} />
+      <Points points={pors.map((por) => por.title)} markdown={true} />
     </Section>
   );
 };
